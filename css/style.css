@@ -132,6 +132,23 @@ section { padding: 88px 0; }
 .nav-toggle span {
   display: block; width: 24px; height: 2px;
   background: var(--chalk); border-radius: 2px;
+  transition: transform .3s ease, opacity .2s ease;
+}
+/* 햄버거 → X 변환 */
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* 메뉴 열린 상태에서 navbar 불투명 처리 */
+#navbar.menu-open {
+  background: rgba(42, 64, 49, .98);
+  box-shadow: 0 3px 20px rgba(0,0,0,.3);
 }
 
 /* ============================================================
@@ -953,22 +970,66 @@ section { padding: 88px 0; }
 @media (max-width: 680px) {
   section { padding: 60px 0; }
 
+  /* 모바일 풀-와이드 드롭다운 메뉴 */
   .nav-links {
     display: none;
-    position: fixed; top: 60px; left: 0; right: 0;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
     background: var(--board);
-    flex-direction: column; align-items: stretch;
-    padding: 16px 24px 24px; gap: 0;
-    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px 20px 16px;
+    gap: 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    border-top: 1px solid rgba(240,237,224,.08);
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
   }
   .nav-links.open { display: flex; }
+
+  .nav-links li {
+    width: 100%;
+  }
   .nav-links a {
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(240,237,224,.1);
-    font-size: 1rem;
+    display: block;
+    color: var(--chalk) !important;
+    padding: 15px 6px;
+    border-bottom: 1px solid rgba(240,237,224,.08);
+    font-size: 1.02rem;
+    font-family: 'Jua', sans-serif;
+    letter-spacing: .02em;
+    border-radius: 0;
+    transition: color .2s, background .2s, padding-left .2s;
+  }
+  .nav-links a:hover {
+    color: var(--chalk-yellow) !important;
+    background: rgba(255,255,255,.04);
+    padding-left: 12px;
   }
   .nav-links li:last-child a { border-bottom: none; }
-  .nav-toggle { display: flex; }
+
+  /* CTA를 세로 메뉴 분위기에 맞게 정렬 — 노란 알약 제거 */
+  .nav-links .nav-cta {
+    background: transparent !important;
+    color: var(--chalk-yellow) !important;
+    border-radius: 0 !important;
+    padding: 16px 6px !important;
+    font-weight: 700 !important;
+    margin-top: 6px;
+    border-top: 2px dashed rgba(245,230,66,.35) !important;
+    transition: color .2s, background .2s !important;
+  }
+  .nav-links .nav-cta:hover {
+    background: rgba(245,230,66,.1) !important;
+    color: var(--chalk) !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .nav-toggle {
+    display: flex;
+    z-index: 1001;
+  }
 
   .form-row { grid-template-columns: 1fr; }
 

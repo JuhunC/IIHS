@@ -9,15 +9,31 @@ window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 60);
 });
 
-navToggle.addEventListener('click', () => {
-  const open = navLinks.classList.toggle('open');
-  navToggle.setAttribute('aria-expanded', String(open));
+function closeNav() {
+  navLinks.classList.remove('open');
+  navbar.classList.remove('menu-open');
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+function openNav() {
+  navLinks.classList.add('open');
+  navbar.classList.add('menu-open');
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+
+navToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  navLinks.classList.contains('open') ? closeNav() : openNav();
 });
+
 navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    navToggle.setAttribute('aria-expanded', 'false');
-  });
+  link.addEventListener('click', closeNav);
+});
+
+// 메뉴 바깥 탭하면 자동으로 닫힘
+document.addEventListener('click', (e) => {
+  if (navLinks.classList.contains('open') && !navbar.contains(e.target)) {
+    closeNav();
+  }
 });
 
 /* ============================================================
