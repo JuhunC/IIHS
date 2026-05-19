@@ -941,6 +941,15 @@ section { padding: 88px 0; }
   margin-bottom: 12px;
 }
 .footer-contact a:hover { color: var(--chalk-yellow); }
+
+.footer-bye {
+  font-family: 'Nanum Pen Script', cursive;
+  font-size: 1.25rem;
+  color: var(--chalk-yellow);
+  margin: 18px 0 12px;
+  letter-spacing: .02em;
+}
+
 .footer-copy { font-size: .78rem; color: rgba(240,237,224,.3); }
 
 /* ============================================================
@@ -962,9 +971,27 @@ section { padding: 88px 0; }
 @media (max-width: 960px) {
   .gallery-grid    { grid-template-columns: repeat(2, 1fr); }
   .location-wrap   { grid-template-columns: 1fr; }
-  .timetable-note  { display: none; }
+
+  /* 일정표 모바일 레이아웃: 비고를 content 아래로 배치 */
   .timetable-header { grid-template-columns: 90px 1fr; }
-  .timetable-row    { grid-template-columns: 90px 1fr; }
+  .timetable-header span:nth-child(3) { display: none; }
+  .timetable-row {
+    grid-template-columns: 90px 1fr;
+    grid-template-areas:
+      "time content"
+      "blank note";
+    row-gap: 4px;
+  }
+  .timetable-time    { grid-area: time; align-self: start; }
+  .timetable-content { grid-area: content; }
+  .timetable-note {
+    grid-area: note;
+    text-align: left;
+    margin-top: 2px;
+    padding-top: 6px;
+    border-top: 1px dashed #e2e8f0;
+    font-size: .92rem;
+  }
 }
 
 @media (max-width: 680px) {
