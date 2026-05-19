@@ -483,6 +483,9 @@
           <textarea id="message" name="message" rows="4" placeholder="오랫동안 못 봤던 친구에게 하고 싶은 말을 남겨봐 😊&#10;(나 사실 좋아했어... 도 가능 ㅋㅋ)"></textarea>
         </div>
 
+        <!-- 히든 미션 추첨 결과 (JS가 채움) -->
+        <input type="hidden" id="mission-field" name="mission" value="" />
+
         <button type="submit" class="btn-submit-fun">
           <span class="btn-text">✅ 출석 완료!</span>
           <span class="btn-loading hidden">전송 중... 🚀</span>
@@ -510,6 +513,25 @@
       <p class="footer-copy">Made with ❤️ by 국제반 3기 동창회 · 2026</p>
     </div>
   </footer>
+
+  <!-- ===== HIDDEN MISSION MODAL ===== -->
+  <div id="mission-modal" class="mission-modal hidden" role="dialog" aria-labelledby="mission-title" aria-modal="true">
+    <div class="mission-modal-content">
+      <button class="mission-close" aria-label="닫기">×</button>
+      <div class="mission-icon">🎁</div>
+      <h2 id="mission-title" class="mission-title">히든 미션<br>당첨!</h2>
+      <p class="mission-text">
+        축하해! 너는 이번 동창회의<br>
+        <strong>비밀 미션 수행자</strong>로 뽑혔어 🤫
+      </p>
+      <div class="mission-note">
+        📩 자세한 미션 내용은<br>
+        동창회 전에 문자로 보내줄게
+      </div>
+      <p class="mission-warning">⚠️ 다른 사람한테는 비밀로! 🤐</p>
+      <button class="mission-ok">알겠어! 😎</button>
+    </div>
+  </div>
 
   <!-- GLightbox JS -->
   <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>

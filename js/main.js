@@ -169,8 +169,35 @@ const btnLoading = rsvpForm.querySelector('.btn-loading');
 const successMsg = document.getElementById('rsvp-success');
 const errorMsg   = document.getElementById('rsvp-error');
 
+/* 히든 미션 — '참석' 응답자에게 25% 확률로 당첨 */
+const MISSION_PROBABILITY = 0.25;
+const missionField = document.getElementById('mission-field');
+const missionModal = document.getElementById('mission-modal');
+
+function showMissionModal() {
+  missionModal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function hideMissionModal() {
+  missionModal.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+missionModal.querySelector('.mission-close').addEventListener('click', hideMissionModal);
+missionModal.querySelector('.mission-ok').addEventListener('click', hideMissionModal);
+missionModal.addEventListener('click', (e) => {
+  if (e.target === missionModal) hideMissionModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !missionModal.classList.contains('hidden')) hideMissionModal();
+});
+
 rsvpForm.addEventListener('submit', async e => {
   e.preventDefault();
+
+  // 히든 미션 추첨: 참석 응답 + 25% 확률
+  const attendance = rsvpForm.querySelector('input[name="attendance"]:checked')?.value;
+  const isMissionWinner = attendance === '참석' && Math.random() < MISSION_PROBABILITY;
+  missionField.value = isMissionWinner ? '당첨' : '';
 
   btnText.classList.add('hidden');
   btnLoading.classList.remove('hidden');
@@ -189,6 +216,11 @@ rsvpForm.addEventListener('submit', async e => {
       successMsg.classList.remove('hidden');
       successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       launchConfetti();
+
+      // 당첨자에게 컨페티 직후 미션 팝업 표시
+      if (isMissionWinner) {
+        setTimeout(showMissionModal, 1200);
+      }
     } else {
       throw new Error();
     }
