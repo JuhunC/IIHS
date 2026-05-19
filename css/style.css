@@ -670,6 +670,24 @@ section { padding: 88px 0; }
 }
 .location-map iframe { display: block; }
 
+.bbq-card {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 2px dashed #cbd5e1;
+}
+.bbq-badge {
+  background: #fecaca !important;
+  color: #7f1d1d !important;
+  transform: rotate(1deg) !important;
+}
+.bbq-note {
+  font-family: 'Nanum Pen Script', cursive;
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
 /* ============================================================
    RSVP — 출석부 노트
    ============================================================ */
