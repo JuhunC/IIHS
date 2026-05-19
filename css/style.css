@@ -302,25 +302,35 @@ section { padding: 88px 0; }
   box-shadow: 0 6px 24px rgba(245,230,66,.35);
 }
 
-.hero-cta-group {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.btn-chalk--secondary {
-  color: var(--chalk-blue);
-  border-color: var(--chalk-blue);
-  font-size: 1rem;
-  padding: 12px 28px;
-  box-shadow: 0 0 0 4px rgba(126,200,245,.1);
+/* 포스트잇용 캘린더 버튼 — '메모 + 도장' 느낌 */
+.btn-calendar-sticky {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 9px 16px;
+  background: rgba(255,255,255,.75);
+  color: var(--dark);
+  border: 2px dashed rgba(0,0,0,.28);
+  border-radius: 8px;
   font-family: 'Jua', sans-serif;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s, transform .2s, box-shadow .2s;
+  letter-spacing: .02em;
+  box-shadow: 2px 2px 0 rgba(0,0,0,.08);
 }
-.btn-chalk--secondary:hover {
-  background: var(--chalk-blue);
-  color: var(--board-dark);
-  box-shadow: 0 6px 24px rgba(126,200,245,.35);
+.btn-calendar-sticky:hover {
+  background: var(--dark);
+  color: var(--yellow);
+  border-color: var(--dark);
+  border-style: solid;
+  transform: rotate(-1.5deg) scale(1.05);
+  box-shadow: 3px 4px 0 rgba(0,0,0,.18);
+}
+.btn-calendar-sticky:active {
+  transform: rotate(0deg) scale(.98);
+  box-shadow: 1px 1px 0 rgba(0,0,0,.15);
 }
 
 /* ============================================================
