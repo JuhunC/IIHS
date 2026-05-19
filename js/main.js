@@ -100,7 +100,7 @@ function addToCalendar() {
     const params = new URLSearchParams({
       action: 'TEMPLATE',
       text: '인천국제고 국제반 3기 6월 동창회',
-      dates: '20260613T050000Z/20260614T030000Z',
+      dates: '20260613T030000Z/20260614T030000Z',
       details:
         '🎉 1박 2일 동창회\n' +
         '🍖 6/13 (토) 18:00 — 바비큐 파티 @ 씨앤에스테크\n' +
