@@ -92,87 +92,29 @@ if (typeof GLightbox !== 'undefined') {
    모바일에서는 기본 캘린더 앱이 자동으로 열림
    ============================================================ */
 function addToCalendar() {
-  // 이벤트 데이터
-  const title = '인천국제고 국제반 3기 6월 동창회';
-  const location = '충청남도 천안시 서북구 천안대로 1446 직산역서희스타힐스';
-  const desc =
-    '🎉 1박 2일 동창회\n' +
-    '🍖 6/13 (토) 18:00 — 바비큐 파티 @ 씨앤에스테크\n' +
-    '   주소: 충청남도 천안시 서북구 직산 181-18\n\n' +
-    '📞 동창회장 최주헌: 010-7179-0890';
-
-  // UTC 시각 (KST = UTC+9)
-  // 2026-06-13 14:00 KST → 05:00 UTC
-  // 2026-06-14 12:00 KST → 03:00 UTC
-  const DTSTART = '20260613T050000Z';
-  const DTEND   = '20260614T030000Z';
-
-  // 플랫폼 감지
   const ua = navigator.userAgent || '';
-  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
   const isAndroid = /android/i.test(ua);
 
   // ─── Android: Google 캘린더 Universal Link → 앱 자동 실행
   if (isAndroid) {
     const params = new URLSearchParams({
       action: 'TEMPLATE',
-      text: title,
-      dates: DTSTART + '/' + DTEND,
-      details: desc,
-      location: location
+      text: '인천국제고 국제반 3기 6월 동창회',
+      dates: '20260613T050000Z/20260614T030000Z',
+      details:
+        '🎉 1박 2일 동창회\n' +
+        '🍖 6/13 (토) 18:00 — 바비큐 파티 @ 씨앤에스테크\n' +
+        '주소: 충청남도 천안시 서북구 직산 181-18\n\n' +
+        '📞 동창회장 최주헌: 010-7179-0890',
+      location: '충청남도 천안시 서북구 천안대로 1446 직산역서희스타힐스'
     });
     window.location.href = 'https://calendar.google.com/calendar/render?' + params.toString();
     return;
   }
 
-  // ─── iOS / 데스크톱: .ics 생성
-  const escapeICS = s => s.replace(/[\\,;]/g, c => '\\' + c).replace(/\n/g, '\\n');
-  const pad = n => String(n).padStart(2, '0');
-  const now = new Date();
-  const DTSTAMP =
-    now.getUTCFullYear() + pad(now.getUTCMonth() + 1) + pad(now.getUTCDate()) +
-    'T' + pad(now.getUTCHours()) + pad(now.getUTCMinutes()) + pad(now.getUTCSeconds()) + 'Z';
-
-  const ics = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//IIHS-3rd//Reunion 2026//KO',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    'UID:iihs-3rd-reunion-2026-06@iihs',
-    'DTSTAMP:' + DTSTAMP,
-    'DTSTART:' + DTSTART,
-    'DTEND:'   + DTEND,
-    'SUMMARY:'     + escapeICS(title),
-    'LOCATION:'    + escapeICS(location),
-    'DESCRIPTION:' + escapeICS(desc),
-    'STATUS:CONFIRMED',
-    'BEGIN:VALARM',
-    'ACTION:DISPLAY',
-    'DESCRIPTION:동창회 1일 전 알림',
-    'TRIGGER:-P1D',
-    'END:VALARM',
-    'END:VEVENT',
-    'END:VCALENDAR'
-  ].join('\r\n');
-
-  // ─── iOS Safari: data URI 직접 이동 → "캘린더에 추가" 시트
-  if (isIOS) {
-    window.location.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
-    return;
-  }
-
-  // ─── 데스크톱: .ics 파일 다운로드
-  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'IIHS-3rd-Reunion.ics';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  // ─── iOS / 데스크톱: 정적 .ics 파일로 이동
+  // GitHub Pages가 text/calendar MIME으로 서빙 → iOS Safari가 '캘린더에 추가' 시트 표시
+  window.location.href = 'event.ics';
 }
 
 document.getElementById('btn-calendar').addEventListener('click', addToCalendar);
