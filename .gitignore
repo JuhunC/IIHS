@@ -3,3 +3,6 @@
 node_modules/
 .env
 .env.local
+
+# 원본 갤러리 (용량 큼) — gallery-web/ 압축본만 배포
+images/gallery/
