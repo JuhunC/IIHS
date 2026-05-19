@@ -92,8 +92,7 @@ if (typeof GLightbox !== 'undefined') {
    모바일에서는 기본 캘린더 앱이 자동으로 열림
    ============================================================ */
 function addToCalendar() {
-  const escapeICS = s => s.replace(/[\\,;]/g, c => '\\' + c).replace(/\n/g, '\\n');
-
+  // 이벤트 데이터
   const title = '인천국제고 국제반 3기 6월 동창회';
   const location = '충청남도 천안시 서북구 천안대로 1446 직산역서희스타힐스';
   const desc =
@@ -102,12 +101,32 @@ function addToCalendar() {
     '   주소: 충청남도 천안시 서북구 직산 181-18\n\n' +
     '📞 동창회장 최주헌: 010-7179-0890';
 
-  // UTC 변환 (KST = UTC+9)
-  // 2026-06-13 14:00 KST → 2026-06-13 05:00 UTC
-  // 2026-06-14 12:00 KST → 2026-06-14 03:00 UTC
+  // UTC 시각 (KST = UTC+9)
+  // 2026-06-13 14:00 KST → 05:00 UTC
+  // 2026-06-14 12:00 KST → 03:00 UTC
   const DTSTART = '20260613T050000Z';
   const DTEND   = '20260614T030000Z';
 
+  // 플랫폼 감지
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isAndroid = /android/i.test(ua);
+
+  // ─── Android: Google 캘린더 Universal Link → 앱 자동 실행
+  if (isAndroid) {
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: title,
+      dates: DTSTART + '/' + DTEND,
+      details: desc,
+      location: location
+    });
+    window.location.href = 'https://calendar.google.com/calendar/render?' + params.toString();
+    return;
+  }
+
+  // ─── iOS / 데스크톱: .ics 생성
+  const escapeICS = s => s.replace(/[\\,;]/g, c => '\\' + c).replace(/\n/g, '\\n');
   const pad = n => String(n).padStart(2, '0');
   const now = new Date();
   const DTSTAMP =
@@ -138,6 +157,13 @@ function addToCalendar() {
     'END:VCALENDAR'
   ].join('\r\n');
 
+  // ─── iOS Safari: data URI 직접 이동 → "캘린더에 추가" 시트
+  if (isIOS) {
+    window.location.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+    return;
+  }
+
+  // ─── 데스크톱: .ics 파일 다운로드
   const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
