@@ -484,6 +484,37 @@ section { padding: 88px 0; }
   padding-top: 10px;
 }
 
+/* 지도 퀵링크 (장소 포스트잇 안) */
+.map-quick-links {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 12px;
+  border-radius: 18px;
+  font-size: .78rem;
+  font-family: 'Jua', sans-serif;
+  text-decoration: none;
+  color: var(--white);
+  transition: transform .2s, box-shadow .2s;
+  letter-spacing: .02em;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+.map-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,.22);
+}
+.map-btn:active {
+  transform: translateY(0) scale(.98);
+}
+.map-btn-tmap  { background: #00a3e0; }   /* T맵 SKT 블루 */
+.map-btn-naver { background: #03c75a; }   /* 네이버 그린 */
+
 /* ============================================================
    SCHEDULE — 수업 시간표
    ============================================================ */
