@@ -88,6 +88,70 @@ if (typeof GLightbox !== 'undefined') {
 }
 
 /* ============================================================
+   ADD TO CALENDAR — .ics 파일 다운로드
+   모바일에서는 기본 캘린더 앱이 자동으로 열림
+   ============================================================ */
+function addToCalendar() {
+  const escapeICS = s => s.replace(/[\\,;]/g, c => '\\' + c).replace(/\n/g, '\\n');
+
+  const title = '인천국제고 국제반 3기 6월 동창회';
+  const location = '충청남도 천안시 서북구 천안대로 1446 직산역서희스타힐스';
+  const desc =
+    '🎉 1박 2일 동창회\n' +
+    '🍖 6/13 (토) 18:00 — 바비큐 파티 @ 씨앤에스테크\n' +
+    '   주소: 충청남도 천안시 서북구 직산 181-18\n\n' +
+    '📞 동창회장 최주헌: 010-7179-0890';
+
+  // UTC 변환 (KST = UTC+9)
+  // 2026-06-13 14:00 KST → 2026-06-13 05:00 UTC
+  // 2026-06-14 12:00 KST → 2026-06-14 03:00 UTC
+  const DTSTART = '20260613T050000Z';
+  const DTEND   = '20260614T030000Z';
+
+  const pad = n => String(n).padStart(2, '0');
+  const now = new Date();
+  const DTSTAMP =
+    now.getUTCFullYear() + pad(now.getUTCMonth() + 1) + pad(now.getUTCDate()) +
+    'T' + pad(now.getUTCHours()) + pad(now.getUTCMinutes()) + pad(now.getUTCSeconds()) + 'Z';
+
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//IIHS-3rd//Reunion 2026//KO',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    'UID:iihs-3rd-reunion-2026-06@iihs',
+    'DTSTAMP:' + DTSTAMP,
+    'DTSTART:' + DTSTART,
+    'DTEND:'   + DTEND,
+    'SUMMARY:'     + escapeICS(title),
+    'LOCATION:'    + escapeICS(location),
+    'DESCRIPTION:' + escapeICS(desc),
+    'STATUS:CONFIRMED',
+    'BEGIN:VALARM',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:동창회 1일 전 알림',
+    'TRIGGER:-P1D',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'IIHS-3rd-Reunion.ics';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+document.getElementById('btn-calendar').addEventListener('click', addToCalendar);
+
+/* ============================================================
    CONFETTI — RSVP 성공 시 발사 🎊
    ============================================================ */
 function launchConfetti() {

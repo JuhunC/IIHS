@@ -302,6 +302,27 @@ section { padding: 88px 0; }
   box-shadow: 0 6px 24px rgba(245,230,66,.35);
 }
 
+.hero-cta-group {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-chalk--secondary {
+  color: var(--chalk-blue);
+  border-color: var(--chalk-blue);
+  font-size: 1rem;
+  padding: 12px 28px;
+  box-shadow: 0 0 0 4px rgba(126,200,245,.1);
+  font-family: 'Jua', sans-serif;
+}
+.btn-chalk--secondary:hover {
+  background: var(--chalk-blue);
+  color: var(--board-dark);
+  box-shadow: 0 6px 24px rgba(126,200,245,.35);
+}
+
 /* ============================================================
    COUNTDOWN
    ============================================================ */
