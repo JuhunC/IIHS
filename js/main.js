@@ -191,13 +191,28 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !missionModal.classList.contains('hidden')) hideMissionModal();
 });
 
+/* 테스트 모드 — URL에 ?test-mission=1 추가하면 팝업 미리보기
+   예: https://juhunc.github.io/IIHS/?test-mission=1 */
+if (new URLSearchParams(window.location.search).get('test-mission') === '1') {
+  setTimeout(showMissionModal, 600);
+}
+
 rsvpForm.addEventListener('submit', async e => {
   e.preventDefault();
 
   // 히든 미션 추첨: 참석 응답 + 25% 확률
   const attendance = rsvpForm.querySelector('input[name="attendance"]:checked')?.value;
-  const isMissionWinner = attendance === '참석' && Math.random() < MISSION_PROBABILITY;
+  const roll = Math.random();
+  const isMissionWinner = attendance === '참석' && roll < MISSION_PROBABILITY;
   missionField.value = isMissionWinner ? '당첨' : '';
+
+  // 디버그 로그 (브라우저 개발자 도구 Console에서 확인 가능)
+  console.log('🎲 미션 추첨:', {
+    출석: attendance || '(미선택)',
+    굴림: roll.toFixed(3),
+    임계값: MISSION_PROBABILITY,
+    당첨: isMissionWinner ? '✅ 축하해!' : '❌ 다음 기회에',
+  });
 
   btnText.classList.add('hidden');
   btnLoading.classList.remove('hidden');
